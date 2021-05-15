@@ -16,3 +16,13 @@
   width: 40%;
   margin: 0 auto;
 }
+.width-50 {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.active {
+  color: green;
+  font-weight: 500;
+  border-bottom: 2 rgba($color: green, $alpha: 0.5);
+}

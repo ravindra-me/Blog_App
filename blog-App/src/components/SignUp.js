@@ -1,11 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { signupURL } from "../utils/constant";
+
 export default class SignUp extends React.Component {
   state = {
     username: "",
     email: "",
     password: "",
-    error: {
+    errors: {
       email: "",
       password: "",
       username: "",
@@ -14,23 +16,27 @@ export default class SignUp extends React.Component {
 
   handleChange = (event) => {
     const { value, name } = event.target;
-    const error = { ...this.state.error };
-    console.log(error);
+    const errors = { ...this.state.errors };
+    console.log(errors);
     switch (name) {
       case "email":
-        error.email =
+        errors.email =
           value.indexOf("@") === -1 ? "Email does not contain @" : "";
         break;
       case "password":
-        let vr =
-          /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-        if (!vr.test(value)) {
-          error.password =
-            "password must be include 8 characters, at least one letter, one number and one special character";
+        let passwordError;
+        let vr = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/;
+        if (value.length < 6) {
+          passwordError = "password must b included 6 charecters";
         }
+        if (!vr.test(value)) {
+          passwordError =
+            "password must be include 8 at least one letter, one number and one special character";
+        }
+        errors.password = passwordError;
         break;
       case "username":
-        error.username =
+        errors.username =
           value.length < 4 ? "username must be includes 5 characters" : "";
         break;
       default:
@@ -39,19 +45,53 @@ export default class SignUp extends React.Component {
 
     this.setState({
       [name]: value,
-      error,
+      errors,
     });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
+    const { username, email, password, errors } = this.state;
+    console.log({ username, email, password });
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user: { username, email, password } }),
+    };
+    try {
+      const response = await fetch(signupURL, requestOptions);
+      if (!response.ok) {
+        const jsonData = await response
+          .json()
+          .then(({ errors }) => {
+            return Promise.reject(errors);
+          })
+          .catch((errors) =>
+            this.setState({
+              errors,
+            })
+          );
+        throw new Error("data do not  fetch");
+      }
+      let user = await response.json();
+      let { history } = this.props;
+      this.props.isLogedInUser(user["user"]);
+      history.push("/");
+    } catch (error) {
+      console.log({ error });
+    }
   };
+
   render() {
-    const { email, password, username, error } = this.state;
+    const { email, password, username, errors } = this.state;
     return (
       <section className="py-16">
         <div class="container flex justify-center items-center ">
-          <form action="" className="p-8 shadow-lg border rounded-xl width-40">
+          <form
+            action=""
+            className="p-8 shadow-lg border rounded-xl width-40"
+            onSubmit={this.handleSubmit}
+          >
             <legend className="text-4xl text-center mb-4">Sign Up</legend>
             <Link to="/login">
               <p className="text-center text-green-500">Have a account?</p>
@@ -61,40 +101,40 @@ export default class SignUp extends React.Component {
                 <input
                   type="text"
                   name="username"
-                  id=""
                   placeholder="Username"
                   className="block border-2 py-2 px-4 rounded  w-full"
                   value={username}
                   onChange={this.handleChange}
+                  required
                 />
-                <span className="mb-4 text-red-500">{error.username}</span>
+                <span className="mb-4 text-red-500">{errors.username}</span>
               </div>
               <div className="mb-4">
                 <input
                   type="email"
                   name="email"
-                  id=""
                   placeholder="Email"
                   className="block border-2 py-2 px-4 rounded  w-full"
                   value={email}
                   onChange={this.handleChange}
+                  required
                 />
-                <span className="mb-4 text-red-500">{error.email}</span>
+                <span className="mb-4 text-red-500">{errors.email}</span>
               </div>
               <div className="mb-4">
                 <input
                   type="password"
                   name="password"
-                  id=""
                   placeholder="Password"
                   className="block border-2 py-2 px-4 rounded w-full "
                   value={password}
                   onChange={this.handleChange}
+                  required
                 />
-                <span className="text-red-500">{error.password}</span>
+                <span className="text-red-500">{errors.password}</span>
               </div>
               <div className="text-right">
-                {error.email || error.password ? (
+                {errors.email || errors.password ? (
                   ""
                 ) : (
                   <input

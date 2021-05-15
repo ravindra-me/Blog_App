@@ -15,6 +15,7 @@ export default class Home extends React.Component {
     articlePerPage: 10,
     activePageIndex: 1,
     activeTab: "",
+    author: "",
   };
 
   componentDidMount() {
@@ -35,9 +36,13 @@ export default class Home extends React.Component {
     const limit = this.state.articlePerPage;
     const offset = (this.state.activePageIndex - 1) * limit;
     const tag = this.state.activeTab;
+    const author = this.state.author;
 
     fetch(
-      articlesURL + `/?offset=${offset}&limit=${limit}` + (tag && `&tag=${tag}`)
+      articlesURL +
+        `/?offset=${offset}&limit=${limit}` +
+        (tag && `&tag=${tag}`) +
+        (author && `&author=${author}`)
     )
       .then((res) => {
         if (!res.ok) {
@@ -82,9 +87,16 @@ export default class Home extends React.Component {
     });
   };
 
+  yourFeed = (author) => {
+    this.setState({
+      author,
+    });
+  };
+
   render() {
     let { articles, error, articlesCount, articlePerPage, activePageIndex } =
       this.state;
+    const { isLogedInUser, user } = this.props;
     return (
       <>
         <main>
@@ -95,6 +107,9 @@ export default class Home extends React.Component {
                 <FeedNav
                   activeTab={this.state.activeTab}
                   emptyTab={this.emptyTab}
+                  isLogedInUser={isLogedInUser}
+                  user={user}
+                  yourFeed={this.yourFeed}
                 />
 
                 <Posts articles={articles} error={error} />

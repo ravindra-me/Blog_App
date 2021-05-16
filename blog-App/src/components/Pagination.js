@@ -16,7 +16,7 @@ export default function Pagination(props) {
             onClick={() => changeIndex(e)}
             className={`${
               e === activePageIndex
-                ? "active inline-block border border-green-900 p-2"
+                ? "pagi-active inline-block border border-green-900 p-2"
                 : "inline-block border border-green-900 p-2"
             }`}
           >

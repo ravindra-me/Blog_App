@@ -5,11 +5,15 @@ import Header from "./Header";
 import Home from "./Home";
 import Login from "./Login";
 import SignUp from "./SignUp";
-import SingleArticle from "./SignleArticle";
+import SingleArticle from "./SingleArticle";
+
 import { localStorageUser, userUrl } from "../utils/constant";
 import NewPost from "./NewPost";
 import FullPageSpinner from "./FullPageSpinner";
 import Nomatch from "./Nomatch";
+import Setting from "./Setting";
+
+import Profile from "./Profile";
 
 class App extends React.Component {
   state = {
@@ -70,7 +74,7 @@ class App extends React.Component {
             <Home user={user} isLogedInUser={isLogedInUser} />
           </Route>
           {isLogedInUser ? (
-            <AuthanticatePage />
+            <AuthanticatePage isLogedInUser={isLogedInUser} user={user} />
           ) : (
             <UnAuthanticatePage isLogedInUser={this.isLogedInUser} />
           )}
@@ -80,13 +84,22 @@ class App extends React.Component {
   }
 }
 
-function AuthanticatePage() {
+function AuthanticatePage(props) {
+  let { isLogedInUser, user } = props;
   return (
     <>
-      <Route path="/editor">
-        <NewPost />
+      <Route path="/new-post">
+        <NewPost user={user} />
       </Route>
-      <Route path="/article/:slug" component={SingleArticle} />
+      <Route path="/article/:slug">
+        <SingleArticle isLogedInUser={isLogedInUser} />
+      </Route>
+      <Route path="/setting">
+        <Setting user={user} />
+      </Route>
+      <Route path="/profile">
+        <Profile user={user} />
+      </Route>
       <Route path="*">
         <Nomatch />
       </Route>
@@ -101,7 +114,6 @@ function UnAuthanticatePage(props) {
       <Route path="/login">
         <Login isLogedInUser={isLogedInUser} />
       </Route>
-
       <Route path="/signup">
         <SignUp isLogedInUser={isLogedInUser} />
       </Route>

@@ -1,19 +1,20 @@
 import { NavLink, Link } from "react-router-dom";
 
 export default function FeedNav(props) {
-  let { activeTab, emptyTab, isLogedInUser, user, yourFeed } = props;
+  let { activeTab, emptyTab, isLogedInUser, user, yourFeedFn, activeTag } =
+    props;
   return (
     <section>
       <div class="border-b-2  pb-2">
         <ul className="flex">
           {isLogedInUser && (
-            <li className="mr-4" onClick={() => yourFeed(user.username)}>
+            <li className="mr-4" onClick={() => yourFeedFn(user.username)}>
               <NavLink
                 to="/"
-                activeClassName={
-                  isLogedInUser &&
+                activeClassName={`${
+                  activeTag === "your feed" &&
                   "text-green-500 border-b-2 border-green-500 pb-3"
-                }
+                }`}
               >
                 your feed
               </NavLink>
@@ -23,8 +24,9 @@ export default function FeedNav(props) {
             <NavLink
               to="/"
               activeClassName={`${
-                activeTab === "" &&
-                "text-green-500 border-b-2 border-green-500 pb-3"
+                activeTab === "" && activeTag === ""
+                  ? "text-green-500 border-b-2 border-green-500 pb-3"
+                  : ""
               }`}
             >
               Global Feed

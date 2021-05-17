@@ -61,6 +61,17 @@ class App extends React.Component {
     localStorage.setItem(localStorageUser, user.token);
   };
 
+  logout = () => {
+    this.setState({
+      isLogedInUser: false,
+      user: null,
+      isVerifying: false,
+    });
+    localStorage.clear();
+    let { history } = this.props;
+    console.log(history);
+  };
+
   render() {
     const { isLogedInUser, user, isVerifying } = this.state;
     if (isVerifying) {
@@ -74,7 +85,11 @@ class App extends React.Component {
             <Home user={user} isLogedInUser={isLogedInUser} />
           </Route>
           {isLogedInUser ? (
-            <AuthanticatePage isLogedInUser={isLogedInUser} user={user} />
+            <AuthanticatePage
+              isLogedInUser={isLogedInUser}
+              user={user}
+              logout={this.logout}
+            />
           ) : (
             <UnAuthanticatePage isLogedInUser={this.isLogedInUser} />
           )}
@@ -85,7 +100,7 @@ class App extends React.Component {
 }
 
 function AuthanticatePage(props) {
-  let { isLogedInUser, user } = props;
+  let { isLogedInUser, user, logout } = props;
   return (
     <>
       <Route path="/new-post">
@@ -95,11 +110,14 @@ function AuthanticatePage(props) {
         <SingleArticle isLogedInUser={isLogedInUser} />
       </Route>
       <Route path="/setting">
-        <Setting user={user} />
+        <Setting user={user} logout={logout} />
       </Route>
       <Route path="/profile">
         <Profile user={user} />
       </Route>
+      {/* <Route path="/logout">
+        <Home />
+      </Route> */}
       <Route path="*">
         <Nomatch />
       </Route>
@@ -116,6 +134,9 @@ function UnAuthanticatePage(props) {
       </Route>
       <Route path="/signup">
         <SignUp isLogedInUser={isLogedInUser} />
+      </Route>
+      <Route path="/article/:slug">
+        <SingleArticle isLogedInUser={isLogedInUser} />
       </Route>
       <Route path="*">
         <Nomatch />

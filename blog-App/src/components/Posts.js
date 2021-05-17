@@ -5,7 +5,12 @@ function Posts(props) {
   if (!props.articles) {
     return <Loader />;
   }
-  return props.articles.map((article) => <Post {...article} />);
+  if (props.articles.length < 1) {
+    return <h1>No article here</h1>;
+  }
+  return props.articles.map((article, index) => (
+    <Post key={index} {...article} />
+  ));
 }
 
 export default Posts;

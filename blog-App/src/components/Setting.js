@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { userUrl, localStorageUser } from "../utils/constant";
 class Setting extends React.Component {
   state = {
@@ -66,14 +66,7 @@ class Setting extends React.Component {
       .then(({ user }) => console.log(user));
   };
 
-  logout = () => {
-    let { history } = this.props;
-    localStorage.clear();
-    history.push("/");
-  };
-
   render() {
-    console.log(this.props.user);
     const { username, email, bio, image, password } = this.state;
     return (
       <>
@@ -139,7 +132,10 @@ class Setting extends React.Component {
             <div className="line h-0.5 bg-gray-500 my-8"></div>
             <button
               className="absolute top-0 right-0 bg-blue-200 px-4 py-2 rounded text-green-800 font-bold shadow-lg"
-              onClick={this.logout}
+              onClick={() => {
+                this.props.logout();
+                this.props.history.push("/");
+              }}
             >
               Log Out
             </button>

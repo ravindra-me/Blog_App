@@ -23,6 +23,15 @@
 
 .active {
   color: green;
+  outline: none;
+  background-color: white;
   font-weight: 500;
-  border-bottom: 2 rgba($color: green, $alpha: 0.5);
+  padding-top: 2px;
+}
+
+.pagi-active {
+  color: white;
+  outline: none;
+  font-weight: 500;
+  background-color: rgba($color: green, $alpha: 0.5);
 }

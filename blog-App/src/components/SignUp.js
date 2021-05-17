@@ -2,7 +2,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { signupURL } from "../utils/constant";
 
-export default class SignUp extends React.Component {
+ class SignUp extends React.Component {
   state = {
     username: "",
     email: "",
@@ -151,3 +151,6 @@ export default class SignUp extends React.Component {
     );
   }
 }
+
+
+export default SignUp

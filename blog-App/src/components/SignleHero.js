@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function SingleHero(props) {
+ function SingleHero(props) {
   console.log(props);
   const { author, createdAt, title } = props.article;
   return (
@@ -32,3 +32,5 @@ export default function SingleHero(props) {
     </>
   );
 }
+
+export default SingleHero

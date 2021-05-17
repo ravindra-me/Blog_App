@@ -1,13 +1,12 @@
 import React from "react";
 import Hero from "./Hero";
-import AsideTags from "./AsideTag";
 import FeedNav from "./FeedNav";
 import Posts from "./Posts";
 import Sidebar from "./Sidebar";
 import { articlesURL } from "../utils/constant";
 
 import Pagination from "./Pagination";
-export default class Home extends React.Component {
+class Home extends React.Component {
   state = {
     articles: null,
     error: null,
@@ -15,6 +14,7 @@ export default class Home extends React.Component {
     articlePerPage: 10,
     activePageIndex: 1,
     activeTab: "",
+    activeTag: "",
     author: "",
   };
 
@@ -26,7 +26,8 @@ export default class Home extends React.Component {
     console.log(preState);
     if (
       preState.activePageIndex !== this.state.activePageIndex ||
-      preState.activeTab !== this.state.activeTab
+      preState.activeTab !== this.state.activeTab ||
+      preState.activeTag !== this.state.activeTag
     ) {
       this.fetchData();
     }
@@ -78,24 +79,34 @@ export default class Home extends React.Component {
   emptyTab = () => {
     this.setState({
       activeTab: "",
+      activeTag: "",
+      author: "",
     });
   };
 
   addTab = (value) => {
     this.setState({
       activeTab: value,
+      activeTag: "",
     });
   };
 
-  yourFeed = (author) => {
+  yourFeedFn = (author) => {
     this.setState({
       author,
+      activeTag: "your feed",
     });
   };
 
   render() {
-    let { articles, error, articlesCount, articlePerPage, activePageIndex } =
-      this.state;
+    let {
+      articles,
+      error,
+      articlesCount,
+      articlePerPage,
+      activePageIndex,
+      activeTag,
+    } = this.state;
     const { isLogedInUser, user } = this.props;
     return (
       <>
@@ -109,7 +120,8 @@ export default class Home extends React.Component {
                   emptyTab={this.emptyTab}
                   isLogedInUser={isLogedInUser}
                   user={user}
-                  yourFeed={this.yourFeed}
+                  yourFeedFn={this.yourFeedFn}
+                  activeTag={activeTag}
                 />
 
                 <Posts articles={articles} error={error} />
@@ -128,3 +140,5 @@ export default class Home extends React.Component {
     );
   }
 }
+
+export default Home;

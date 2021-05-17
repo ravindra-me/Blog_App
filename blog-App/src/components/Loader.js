@@ -1,4 +1,4 @@
-export default function Loader() {
+ function Loader() {
   return (
     <div class="bouncing-loader">
       <div></div>
@@ -7,3 +7,4 @@ export default function Loader() {
     </div>
   );
 }
+export default Loader

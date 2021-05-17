@@ -3,18 +3,18 @@ import { NavLink, Route, Link } from "react-router-dom";
 export default function Header(props) {
   const { isLogedInUser, user } = props;
   return (
-    <header>
+    <header className="bg-gray-100">
       <div class="container flex justify-between items-center py-4">
         <NavLink
           to="/index"
           exact
-          className="text-green-500 font-bold text-2xl"
+          className="text-green-600 font-semibold	 text-2xl"
         >
           conduit
         </NavLink>
         <nav>
           <ul className="flex">
-            <li className="ml-4">
+            <li className="ml-4 font-semibold	">
               <NavLink to="/" activeClassName="text-gray-500" exact>
                 Home
               </NavLink>
@@ -34,12 +34,12 @@ export default function Header(props) {
 function UnloginUser(props) {
   return (
     <>
-      <li className="ml-4">
+      <li className="ml-4 font-semibold	">
         <NavLink activeClassName="text-gray-500" to="/login">
           Sign in
         </NavLink>
       </li>
-      <li className="ml-4">
+      <li className="ml-4 font-semibold	">
         <NavLink activeClassName="text-gray-500" to="/signup">
           Sign up
         </NavLink>
@@ -52,17 +52,17 @@ function LoginUser(props) {
   let { user } = props;
   return (
     <>
-      <li className="ml-4">
-        <NavLink activeClassName="text-gray-500" to="/editor">
+      <li className="ml-4 font-semibold	">
+        <NavLink activeClassName="text-gray-500" to="/new-post">
           New post
         </NavLink>
       </li>
-      <li className="ml-4">
+      <li className="ml-4 font-semibold	">
         <NavLink activeClassName="text-gray-500" to="/setting">
           Setting
         </NavLink>
       </li>
-      <li className="ml-4">
+      <li className="ml-4 font-semibold	">
         <NavLink activeClassName="text-gray-500" to="/profile">
           {user.username}
         </NavLink>

@@ -1,9 +1,12 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { articlesURL } from "../utils/constant";
+
 import Loader from "./Loader";
 import SingleHero from "./SignleHero";
 import SingleArtiCont from "./SingleArtiCont";
-export default class SingleArticle extends React.Component {
+
+class SingleArticle extends React.Component {
   state = {
     article: null,
     error: null,
@@ -44,8 +47,13 @@ export default class SingleArticle extends React.Component {
     return (
       <>
         <SingleHero article={article} error={error} />
-        <SingleArtiCont article={article} />
+        <SingleArtiCont
+          article={article}
+          isLogedInUser={this.props.isLogedInUser}
+        />
       </>
     );
   }
 }
+
+export default withRouter(SingleArticle);

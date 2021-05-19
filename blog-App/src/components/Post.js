@@ -28,14 +28,17 @@ function Post(props) {
         </div>
         <div>
           <button
-            className="border-2 border-green-500 rounded p-1 outline-none"
+            className="border border-green-500 rounded p-1 outline-none"
             onClick={
-              favoritesCount !== 0
-                ? () => unFavoriteArticle(slug)
-                : () => favoriteArticle(slug)
+              favoritesCount === 0
+                ? () => favoriteArticle(slug)
+                : () => unFavoriteArticle(slug)
             }
           >
-            <i className="far fa-heart text-2xl">{favoritesCount}</i>
+            <i className="far fa-heart ">
+              {" "}
+              <span className="ml-1">{favoritesCount}</span>{" "}
+            </i>
           </button>
         </div>
       </header>
@@ -46,7 +49,7 @@ function Post(props) {
         </Link>
       </div>
       <div className="flex justify-between items-center mt-4 text-gray-400">
-        <Link to={`/article/${slug}`}>lern more...</Link>
+        <Link to={`/article/${slug}`}>Read more...</Link>
         <ul className="flex">
           {tagList.map((e, i) =>
             e === "" ? (

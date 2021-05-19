@@ -9,8 +9,10 @@ function SingleHero(props) {
     <>
       <section className="py-24 bg-black">
         <div class="container  text-white ">
-          <h1 className="text-center text-2xl font-bold mb-8">{title}</h1>
-          <div className=" flex justify-center items-center">
+          <h1 className=" text-2xl font-semibold mb-8 ">
+            {title.toUpperCase()}
+          </h1>
+          <div className=" flex  items-center">
             <div>
               <Link href="/profile">
                 <img
@@ -29,19 +31,19 @@ function SingleHero(props) {
             </div>
           </div>
           {user && user.username === author.username && (
-            <div className="text-center mt-8">
+            <div className="mt-8">
               <Link
                 to={`/editor/${slug}`}
-                className="border ml-4 px-2 py-2 rounded"
+                className="border ml-4 px-2 py-2 rounded inline-block"
                 onClick={() => editArticleFn(article)}
               >
-                edit Article
+                Edit Article
               </Link>
               <button
-                className="border ml-4 px-2 py-2 rounded"
+                className="border ml-4 px-2 py-2 rounded inline-block"
                 onClick={() => handleDelete(article.slug)}
               >
-                delete
+                Delete
               </button>
             </div>
           )}

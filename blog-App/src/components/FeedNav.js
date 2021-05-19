@@ -16,7 +16,7 @@ export default function FeedNav(props) {
                   "text-green-500 border-b-2 border-green-500 pb-3"
                 }`}
               >
-                your feed
+                Your feed
               </NavLink>
             </li>
           )}

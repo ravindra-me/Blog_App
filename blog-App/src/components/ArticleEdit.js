@@ -1,7 +1,7 @@
 import React from "react";
 import { articlesURL } from "../utils/constant";
 import { withRouter } from "react-router-dom";
-class NewPost extends React.Component {
+class ArticleEdit extends React.Component {
   state = {
     title: "",
     description: "",
@@ -13,6 +13,20 @@ class NewPost extends React.Component {
       body: "",
     },
   };
+
+  componentDidMount() {
+    fetch(articlesURL + `/${this.props.match.params.slug}`)
+      .then((data) => data.json())
+      .then(({ article }) => {
+        let { title, description, tagList, body } = article;
+        this.setState({
+          title,
+          description,
+          tagList: tagList.join(", "),
+          body,
+        });
+      });
+  }
 
   handleChange = (event) => {
     let { name, value } = event.target;
@@ -121,7 +135,7 @@ class NewPost extends React.Component {
             <input
               type="submit"
               className="bg-green-500 px-8 py-3 rounded text-white font-semibold text-xl"
-              value="Publish Article"
+              value="Update Article"
             />
           </fieldset>
         </form>
@@ -130,4 +144,4 @@ class NewPost extends React.Component {
   }
 }
 
-export default withRouter(NewPost);
+export default withRouter(ArticleEdit);

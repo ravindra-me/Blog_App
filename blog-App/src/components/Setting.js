@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { userUrl, localStorageUser } from "../utils/constant";
 class Setting extends React.Component {
   state = {
@@ -18,7 +18,6 @@ class Setting extends React.Component {
   handleChange = (event) => {
     const { value, name } = event.target;
     const errors = { ...this.state.errors };
-    console.log(errors);
     switch (name) {
       case "email":
         errors.email =
@@ -52,7 +51,6 @@ class Setting extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { username, email, bio, image, password } = this.state;
-    console.log(username, email, bio);
     let storageKey = localStorage[localStorageUser];
     fetch(userUrl, {
       method: "PUT",
@@ -93,6 +91,7 @@ class Setting extends React.Component {
                 placeholder="username"
                 className="block w-full border py-2 mt-4 rounded px-4"
                 value={username}
+                name="username"
                 onChange={this.handleChange}
               />
               <textarea

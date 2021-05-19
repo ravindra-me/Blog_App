@@ -23,7 +23,6 @@ class Home extends React.Component {
   }
 
   componentDidUpdate(preProps, preState) {
-    console.log(preState);
     if (
       preState.activePageIndex !== this.state.activePageIndex ||
       preState.activeTab !== this.state.activeTab ||
@@ -49,7 +48,6 @@ class Home extends React.Component {
         if (!res.ok) {
           throw new Error(res.status);
         }
-        console.log(res);
         return res.json();
       })
       .then((data) =>
@@ -67,7 +65,6 @@ class Home extends React.Component {
   };
 
   changeIndex = (index) => {
-    console.log(index);
     this.setState(
       {
         activePageIndex: index,
@@ -98,6 +95,46 @@ class Home extends React.Component {
     });
   };
 
+  favoriteArticle = (slug) => {
+    fetch(articlesURL + `/${slug}/favorite`, {
+      method: "POST",
+      headers: {
+        authorization: `Token ${this.props.user.token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then(({ errors }) => {
+            return Promise.reject(errors);
+          });
+        }
+        return res.json();
+      })
+      .then(({ article }) => {
+        this.fetchData();
+      });
+  };
+
+  unFavoriteArticle = (slug) => {
+    fetch(articlesURL + `/${slug}/favorite`, {
+      method: "DELETE",
+      headers: {
+        authorization: `Token ${this.props.user.token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then(({ errors }) => {
+            return Promise.reject(errors);
+          });
+        }
+        return res.json();
+      })
+      .then(({ article }) => {
+        this.fetchData();
+      });
+  };
+
   render() {
     let {
       articles,
@@ -124,7 +161,12 @@ class Home extends React.Component {
                   activeTag={activeTag}
                 />
 
-                <Posts articles={articles} error={error} />
+                <Posts
+                  articles={articles}
+                  error={error}
+                  favoriteArticle={this.favoriteArticle}
+                  unFavoriteArticle={this.unFavoriteArticle}
+                />
                 <Pagination
                   articlePerPage={articlePerPage}
                   articlesCount={articlesCount}

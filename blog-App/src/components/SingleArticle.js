@@ -16,9 +16,22 @@ class SingleArticle extends React.Component {
     this.fetchData();
   }
 
+  handleDelete = (slug) => {
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        authorization: `Token ${this.props.user.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(articlesURL + `/${slug}`, requestOptions).then((data) =>
+      this.props.history.push("/")
+    );
+  };
+
   fetchData = () => {
     const slug = this.props.match.params.slug;
-    console.log(slug);
+
     fetch(articlesURL + `/${slug}`)
       .then((res) => {
         if (!res.ok) {
@@ -41,15 +54,24 @@ class SingleArticle extends React.Component {
 
   render() {
     let { article, error } = this.state;
+    let { isLogedInUser, user, editArticleFn } = this.props;
     if (!article) {
       return <Loader />;
     }
     return (
       <>
-        <SingleHero article={article} error={error} />
+        <SingleHero
+          article={article}
+          error={error}
+          isLogedInUser={isLogedInUser}
+          user={user}
+          editArticleFn={editArticleFn}
+          handleDelete={this.handleDelete}
+        />
         <SingleArtiCont
           article={article}
-          isLogedInUser={this.props.isLogedInUser}
+          isLogedInUser={isLogedInUser}
+          user={user}
         />
       </>
     );

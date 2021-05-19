@@ -2,7 +2,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { signupURL } from "../utils/constant";
 
- class SignUp extends React.Component {
+class SignUp extends React.Component {
   state = {
     username: "",
     email: "",
@@ -75,7 +75,7 @@ import { signupURL } from "../utils/constant";
       }
       let user = await response.json();
       let { history } = this.props;
-      this.props.isLogedInUser(user["user"]);
+      this.props.isLogedInUserFn(user["user"]);
       history.push("/");
     } catch (error) {
       console.log({ error });
@@ -86,7 +86,7 @@ import { signupURL } from "../utils/constant";
     const { email, password, username, errors } = this.state;
     return (
       <section className="py-16">
-        <div class="container flex justify-center items-center ">
+        <div className="container flex justify-center items-center ">
           <form
             action=""
             className="p-8 shadow-lg border rounded-xl width-40"
@@ -152,5 +152,4 @@ import { signupURL } from "../utils/constant";
   }
 }
 
-
-export default SignUp
+export default SignUp;

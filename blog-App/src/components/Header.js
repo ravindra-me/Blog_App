@@ -1,14 +1,15 @@
 import React from "react";
 import { NavLink, Route, Link } from "react-router-dom";
-export default function Header(props) {
-  const { isLogedInUser, user } = props;
+
+function Header(props) {
+  const { isLogedInUser, user, handleProfile } = props;
   return (
     <header className="bg-gray-100">
-      <div class="container flex justify-between items-center py-4">
+      <div className="container flex justify-between items-center py-4">
         <NavLink
           to="/index"
           exact
-          className="text-green-600 font-semibold	 text-2xl"
+          className="text-green-600 font-semibold	 text-2xl "
         >
           conduit
         </NavLink>
@@ -22,7 +23,7 @@ export default function Header(props) {
             {isLogedInUser === false ? (
               <UnloginUser />
             ) : (
-              <LoginUser user={user} />
+              <LoginUser user={user} handleProfile={handleProfile} />
             )}
           </ul>
         </nav>
@@ -49,7 +50,7 @@ function UnloginUser(props) {
 }
 
 function LoginUser(props) {
-  let { user } = props;
+  let { user, handleProfile } = props;
   return (
     <>
       <li className="ml-4 font-semibold	">
@@ -63,10 +64,15 @@ function LoginUser(props) {
         </NavLink>
       </li>
       <li className="ml-4 font-semibold	">
-        <NavLink activeClassName="text-gray-500" to="/profile">
+        <NavLink
+          activeClassName="text-gray-500"
+          to={`/profile/${user.username}`}
+        >
           {user.username}
         </NavLink>
       </li>
     </>
   );
 }
+
+export default Header;

@@ -13,6 +13,7 @@ export default function Pagination(props) {
       <div className="flex justify-center items-center">
         {pagesArray.map((e, i) => (
           <span
+            key={i}
             onClick={() => changeIndex(e)}
             className={`${
               e === activePageIndex

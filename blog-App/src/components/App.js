@@ -14,12 +14,18 @@ import Nomatch from "./Nomatch";
 import Setting from "./Setting";
 
 import Profile from "./Profile";
+import ArticleEdit from "./ArticleEdit";
 
 class App extends React.Component {
   state = {
     isLogedInUser: false,
     user: null,
     isVerifying: true,
+    article: null,
+    params: {
+      username: "",
+    },
+    profile: null,
   };
 
   componentDidMount() {
@@ -40,7 +46,7 @@ class App extends React.Component {
           });
         })
         .then(({ user }) => {
-          this.isLogedInUser(user);
+          this.isLogedInUserFn(user);
         })
         .catch((errors) => {
           console.log(errors);
@@ -52,11 +58,12 @@ class App extends React.Component {
     }
   }
 
-  isLogedInUser = (user) => {
+  isLogedInUserFn = (user) => {
     this.setState({
       isLogedInUser: true,
       user,
       isVerifying: false,
+      profile: user,
     });
     localStorage.setItem(localStorageUser, user.token);
   };
@@ -69,11 +76,18 @@ class App extends React.Component {
     });
     localStorage.clear();
     let { history } = this.props;
-    console.log(history);
+  };
+
+  editArticleFn = (article) => {
+    console.log(article);
+    this.setState({
+      article,
+    });
   };
 
   render() {
-    const { isLogedInUser, user, isVerifying } = this.state;
+    const { isLogedInUser, user, isVerifying, article } = this.state;
+
     if (isVerifying) {
       return <FullPageSpinner />;
     }
@@ -89,9 +103,14 @@ class App extends React.Component {
               isLogedInUser={isLogedInUser}
               user={user}
               logout={this.logout}
+              article={article}
+              editArticleFn={this.editArticleFn}
             />
           ) : (
-            <UnAuthanticatePage isLogedInUser={this.isLogedInUser} />
+            <UnAuthanticatePage
+              isLogedInUserFn={this.isLogedInUserFn}
+              isLogedInUser={isLogedInUser}
+            />
           )}
         </Switch>
       </>
@@ -100,47 +119,59 @@ class App extends React.Component {
 }
 
 function AuthanticatePage(props) {
-  let { isLogedInUser, user, logout } = props;
+  let { isLogedInUser, user, logout, editArticleFn, article } = props;
+  console.log(isLogedInUser);
   return (
     <>
-      <Route path="/new-post">
-        <NewPost user={user} />
-      </Route>
-      <Route path="/article/:slug">
-        <SingleArticle isLogedInUser={isLogedInUser} />
-      </Route>
-      <Route path="/setting">
-        <Setting user={user} logout={logout} />
-      </Route>
-      <Route path="/profile">
-        <Profile user={user} />
-      </Route>
-      {/* <Route path="/logout">
-        <Home />
-      </Route> */}
-      <Route path="*">
-        <Nomatch />
-      </Route>
+      <Switch>
+        <Route path="/new-post">
+          <NewPost user={user} />
+        </Route>
+        <Route path="/article/:slug">
+          <SingleArticle
+            isLogedInUser={isLogedInUser}
+            user={user}
+            editArticleFn={editArticleFn}
+          />
+        </Route>
+        <Route path="/setting">
+          <Setting user={user} logout={logout} />
+        </Route>
+        <Route path="/profile/:username">
+          <Profile user={user} />
+        </Route>
+        <Route path="/editor/:slug">
+          <ArticleEdit article={article} user={user} />
+        </Route>
+        <Route path="*">
+          <Nomatch />
+        </Route>
+      </Switch>
     </>
   );
 }
 
 function UnAuthanticatePage(props) {
-  let { isLogedInUser } = props;
+  let { isLogedInUserFn, isLogedInUser } = props;
   return (
     <>
-      <Route path="/login">
-        <Login isLogedInUser={isLogedInUser} />
-      </Route>
-      <Route path="/signup">
-        <SignUp isLogedInUser={isLogedInUser} />
-      </Route>
-      <Route path="/article/:slug">
-        <SingleArticle isLogedInUser={isLogedInUser} />
-      </Route>
-      <Route path="*">
-        <Nomatch />
-      </Route>
+      <Switch>
+        <Route path="/login">
+          <Login isLogedInUserFn={isLogedInUserFn} />
+        </Route>
+        <Route path="/signup">
+          <SignUp isLogedInUserFn={isLogedInUserFn} />
+        </Route>
+        <Route path="/article/:slug">
+          <SingleArticle
+            isLogedInUserFn={isLogedInUserFn}
+            isLogedInUser={isLogedInUser}
+          />
+        </Route>
+        <Route path="*">
+          <Nomatch />
+        </Route>
+      </Switch>
     </>
   );
 }

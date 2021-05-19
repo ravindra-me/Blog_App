@@ -2,6 +2,7 @@ import React from "react";
 import Loader from "./Loader";
 import Post from "./Post";
 function Posts(props) {
+  let { favoriteArticle, unFavoriteArticle } = props;
   if (!props.articles) {
     return <Loader />;
   }
@@ -9,7 +10,12 @@ function Posts(props) {
     return <h1>No article here</h1>;
   }
   return props.articles.map((article, index) => (
-    <Post key={index} {...article} />
+    <Post
+      key={index}
+      article={article}
+      favoriteArticle={favoriteArticle}
+      unFavoriteArticle={unFavoriteArticle}
+    />
   ));
 }
 

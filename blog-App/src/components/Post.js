@@ -1,13 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-export default function Post(props) {
-  let { author, createdAt, title, description, tagList, slug } = props;
+function Post(props) {
+  let { author, createdAt, title, description, tagList, slug, favoritesCount } =
+    props.article;
+  let { favoriteArticle, unFavoriteArticle } = props;
+
   return (
     <article className="mt-8 border-b-2 pb-4">
       <header className="flex justify-between items-center">
         <div className="flex">
           <div>
-            <Link href="/profile">
+            <Link to={`/profile/${author.username}`}>
               <img
                 src={
                   author.image ||
@@ -19,13 +22,20 @@ export default function Post(props) {
             </Link>
           </div>
           <div className="ml-4">
-            <Link href="/profile">{author.username}</Link>
+            <Link to={`/profile/${author.username}`}>{author.username}</Link>
             <p>{createdAt}</p>
           </div>
         </div>
         <div>
-          <button>
-            <i className="far fa-heart"></i>
+          <button
+            className="border-2 border-green-500 rounded p-1 outline-none"
+            onClick={
+              favoritesCount !== 0
+                ? () => unFavoriteArticle(slug)
+                : () => favoriteArticle(slug)
+            }
+          >
+            <i className="far fa-heart text-2xl">{favoritesCount}</i>
           </button>
         </div>
       </header>
@@ -38,12 +48,12 @@ export default function Post(props) {
       <div className="flex justify-between items-center mt-4 text-gray-400">
         <Link to={`/article/${slug}`}>lern more...</Link>
         <ul className="flex">
-          {tagList.map((e) =>
+          {tagList.map((e, i) =>
             e === "" ? (
               ""
             ) : (
-              <li className="mr-4 border rounded px-2">
-                <Link href="">{e}</Link>
+              <li key={i} className="mr-4 border rounded px-2">
+                <Link to={`/article/${slug}`}>{e}</Link>
               </li>
             )
           )}
@@ -52,3 +62,5 @@ export default function Post(props) {
     </article>
   );
 }
+
+export default Post;

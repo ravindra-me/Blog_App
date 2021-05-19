@@ -1,9 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
- function SingleHero(props) {
-  console.log(props);
-  const { author, createdAt, title } = props.article;
+function SingleHero(props) {
+  const { author, createdAt, title, slug } = props.article;
+  const { user, editArticleFn, article, handleDelete } = props;
+
   return (
     <>
       <section className="py-24 bg-black">
@@ -23,14 +24,31 @@ import { Link } from "react-router-dom";
               </Link>
             </div>
             <div className="ml-4">
-              <Link href="/profile">{author.username}</Link>
+              <Link to={`/profile/${author.username}`}>{author.username}</Link>
               <p>{createdAt}</p>
             </div>
           </div>
+          {user && user.username === author.username && (
+            <div className="text-center mt-8">
+              <Link
+                to={`/editor/${slug}`}
+                className="border ml-4 px-2 py-2 rounded"
+                onClick={() => editArticleFn(article)}
+              >
+                edit Article
+              </Link>
+              <button
+                className="border ml-4 px-2 py-2 rounded"
+                onClick={() => handleDelete(article.slug)}
+              >
+                delete
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </>
   );
 }
 
-export default SingleHero
+export default withRouter(SingleHero);

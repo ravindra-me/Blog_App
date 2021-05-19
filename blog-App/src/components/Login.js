@@ -70,7 +70,7 @@ class Login extends React.Component {
       }
       let user = await response.json();
       let { history } = this.props;
-      this.props.isLogedInUser(user["user"]);
+      this.props.isLogedInUserFn(user["user"]);
       history.push("/");
     } catch (error) {
       console.log({ error });
@@ -82,7 +82,7 @@ class Login extends React.Component {
     console.log(this.props);
     return (
       <section className="py-16">
-        <div class="container flex justify-center items-center ">
+        <div className="container flex justify-center items-center ">
           <form
             action=""
             className="p-8 shadow-lg border rounded-xl width-40"
@@ -124,7 +124,7 @@ class Login extends React.Component {
                   <input
                     type="submit"
                     value="Sign In"
-                    className="bg-green-500 px-4 py-2 rounded"
+                    className="bg-green-500 px-4 py-2 rounded text-white font-bold"
                   />
                 )}
               </div>

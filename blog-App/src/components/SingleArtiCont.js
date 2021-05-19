@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
+import Comment from "./Comment";
 
 function SingleArtiCont(props) {
   const { description, tagList, body } = props.article;
-  console.log(props.isLogedInUser);
+
   return (
     <section className="py-16">
       <div className="container">
@@ -23,7 +24,11 @@ function SingleArtiCont(props) {
             )}
           </ul>
         </div>
-        {props.isLogedInUser === false ? <Footer /> : ""}
+        {props.isLogedInUser === false ? (
+          <Footer />
+        ) : (
+          <Comment article={props.article} user={props.user} />
+        )}
       </div>
     </section>
   );

@@ -150,7 +150,7 @@ class Profile extends React.Component {
       <>
         <ProfileBanner
           profile={this.state.profile}
-          user={user}
+          user={user ? user : ""}
           handleFollow={this.handleFollow}
           handleUnFollow={this.handleUnFollow}
         />

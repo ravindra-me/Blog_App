@@ -168,6 +168,9 @@ function UnAuthanticatePage(props) {
             isLogedInUser={isLogedInUser}
           />
         </Route>
+        <Route path="/profile/:username">
+          <Profile />
+        </Route>
         <Route path="*">
           <Nomatch />
         </Route>
